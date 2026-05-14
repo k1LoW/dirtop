@@ -22,9 +22,12 @@ depsdev:
 
 credits: depsdev
 	go mod download
-	gocredits -w .
+	gocredits -skip-missing -w .
+	cat _EXTRA_CREDITS >> CREDITS
 
 prerelease_for_tagpr:
+	gocredits -skip-missing -w .
+	cat _EXTRA_CREDITS >> CREDITS
 	git add CHANGELOG.md CREDITS go.mod go.sum
 
 .PHONY: default ci build test lint depsdev credits prerelease_for_tagpr
