@@ -77,9 +77,13 @@ func WriteTable(w io.Writer, stats []aggregator.DirStat, opts TableOpts) error {
 
 // RenderTable is a convenience wrapper returning the table as a string.
 // Used by --watch to feed the same renderer through the TUI library.
+// Writes go to a strings.Builder, which never returns an error, so any error
+// here would indicate an unrecoverable bug.
 func RenderTable(stats []aggregator.DirStat, opts TableOpts) string {
 	var sb strings.Builder
-	_ = WriteTable(&sb, stats, opts)
+	if err := WriteTable(&sb, stats, opts); err != nil {
+		return "render error: " + err.Error()
+	}
 	return sb.String()
 }
 

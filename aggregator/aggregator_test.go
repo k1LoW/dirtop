@@ -183,7 +183,7 @@ func TestAggregate_TopProcs(t *testing.T) {
 	}
 
 	got = Aggregate(samples, Options{Targets: targets, SortKey: SortCPU, TopProcs: 0})
-	if got[0].Top != nil {
-		t.Errorf("TopProcs=0 should leave Top nil, got %+v", got[0].Top)
+	if len(got[0].Top) != 0 {
+		t.Errorf("TopProcs=0 should leave Top empty, got %+v", got[0].Top)
 	}
 }

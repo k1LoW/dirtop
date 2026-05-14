@@ -48,22 +48,22 @@ const defaultParallel = 32
 
 // Collect lists all running processes and samples each over the given interval.
 // Processes whose cwd cannot be read are silently dropped.
-func Collect(ctx context.Context, interval time.Duration) ([]ProcSample, error) {
+func Collect(ctx context.Context, interval time.Duration) ([]ProcSample, error) { //nostyle:repetition
 	return defaultSource.Collect(ctx, interval)
 }
 
-// Source abstracts the process listing/sampling backend so tests can inject fakes.
-type Source interface {
+// source abstracts the process listing/sampling backend so tests can inject fakes.
+type source interface { //nostyle:ifacenames
 	Collect(ctx context.Context, interval time.Duration) ([]ProcSample, error)
 }
 
-var defaultSource Source = gopsutilSource{parallel: defaultParallel}
+var defaultSource source = &gopsutilSource{parallel: defaultParallel}
 
 type gopsutilSource struct {
 	parallel int
 }
 
-func (g gopsutilSource) Collect(ctx context.Context, interval time.Duration) ([]ProcSample, error) {
+func (g *gopsutilSource) Collect(ctx context.Context, interval time.Duration) ([]ProcSample, error) {
 	procs, err := process.ProcessesWithContext(ctx)
 	if err != nil {
 		return nil, err

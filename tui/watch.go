@@ -46,9 +46,10 @@ type WatchOptions struct {
 // or ctx is canceled.
 func RunWatch(ctx context.Context, sampler Sampler, opts WatchOptions) error {
 	m := &watchModel{
-		ctx:     ctx,
-		sampler: sampler,
-		opts:    opts,
+		sample: func() ([]collector.ProcSample, error) {
+			return sampler(ctx, opts.Interval)
+		},
+		opts: opts,
 		// Render an empty table immediately so the layout doesn't jump on first tick.
 		stats: aggregator.Aggregate(nil, opts.AggOpts),
 	}
@@ -58,11 +59,10 @@ func RunWatch(ctx context.Context, sampler Sampler, opts WatchOptions) error {
 }
 
 type watchModel struct {
-	ctx     context.Context
-	sampler Sampler
-	opts    WatchOptions
-	stats   []aggregator.DirStat
-	err     error
+	sample func() ([]collector.ProcSample, error)
+	opts   WatchOptions
+	stats  []aggregator.DirStat
+	err    error
 }
 
 type tickMsg struct {
@@ -102,7 +102,7 @@ func (m *watchModel) View() string {
 
 func (m *watchModel) tick() tea.Cmd {
 	return func() tea.Msg {
-		samples, err := m.sampler(m.ctx, m.opts.Interval)
+		samples, err := m.sample()
 		if err != nil {
 			return tickMsg{err: err}
 		}
