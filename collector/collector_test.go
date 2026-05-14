@@ -47,9 +47,9 @@ func TestCollect_FindsSelf(t *testing.T) {
 		t.Fatal("expected at least one sample, got 0")
 	}
 
-	myPID := int32(os.Getpid())
+	myPID := os.Getpid()
 	for _, s := range samples {
-		if s.PID == myPID {
+		if int(s.PID) == myPID {
 			if s.Cwd == "" {
 				t.Fatal("self sample has empty Cwd")
 			}

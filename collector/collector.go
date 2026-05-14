@@ -83,7 +83,6 @@ func (g gopsutilSource) Collect(ctx context.Context, interval time.Duration) ([]
 	)
 
 	for _, p := range procs {
-		p := p
 		eg.Go(func() error {
 			cwd, err := p.CwdWithContext(egCtx)
 			if err != nil || cwd == "" {
