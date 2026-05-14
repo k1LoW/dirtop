@@ -8,6 +8,7 @@ Specify one or more directories — `dirtop` aggregates every process whose curr
 
 - Aggregate CPU% and RSS by directory, with PID count per row
 - Compare multiple directories side by side in one table
+- Expand a parent directory into its subdirectories (`--depth N`)
 - Nested top-N processes per directory (`--top-procs`) with cwd hint
 - Full command line view (`--full-cmd`)
 - JSON output (`--json`) and continuously refreshing TUI (`--watch`)
@@ -32,6 +33,17 @@ $ dirtop ~/src/github.com/k1LoW/dirtop ~/src/github.com/k1LoW/dirmap
 DIR                                       PID(S)  COMMAND  CPU%  MEM(RSS)
 /Users/k1low/src/github.com/k1LoW/dirtop  (7)              18.9  163.2MiB
 /Users/k1low/src/github.com/k1LoW/dirmap  (0)              0.0   0B
+```
+
+Expand a parent directory into its immediate subdirectories (one row each):
+
+```console
+$ dirtop --depth 1 --sort cpu ~/src/github.com/k1LoW
+DIR                                           PID(S)  COMMAND  CPU%  MEM(RSS)
+/Users/k1low/src/github.com/k1LoW/dirtop      (8)              24.0  253.0MiB
+/Users/k1low/src/github.com/k1LoW/animNumber  (5)              7.4   84.5MiB
+/Users/k1low/src/github.com/k1LoW/kakitori    (9)              6.0   110.7MiB
+...
 ```
 
 Show the top processes inside each directory:
@@ -67,6 +79,7 @@ $ dirtop --json --top-procs 3 ~/src/foo | jq .
 
 | Flag | Default | Description |
 |------|---------|-------------|
+| `--depth` | `0` | Expand each DIR into subdirectories exactly N levels below (`0` = off) |
 | `--top-procs` | `0` | Show top N processes per directory (`0` = off) |
 | `--sort` | `input` | Sort rows by `input` / `cpu` / `mem` / `pids` |
 | `--full-cmd` | `false` | Show full command line in nested rows |
