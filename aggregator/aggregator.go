@@ -66,9 +66,10 @@ const (
 
 // Options controls aggregation behavior.
 type Options struct {
-	Targets  []Target
-	SortKey  string
-	TopProcs int
+	Targets   []Target
+	SortKey   string
+	TopProcs  int
+	ShowEmpty bool
 }
 
 // Aggregate buckets samples into per-target DirStats. Samples that don't
@@ -100,6 +101,16 @@ func Aggregate(samples []collector.ProcSample, opts Options) []DirStat {
 			}
 			statsByIdx[i].Top = top
 		}
+	}
+
+	if !opts.ShowEmpty {
+		filtered := statsByIdx[:0]
+		for _, s := range statsByIdx {
+			if s.PIDs > 0 {
+				filtered = append(filtered, s)
+			}
+		}
+		statsByIdx = filtered
 	}
 
 	sortStats(statsByIdx, opts.SortKey)

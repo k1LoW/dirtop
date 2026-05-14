@@ -72,6 +72,7 @@ $ dirtop --json --top-procs 3 ~/src/foo | jq .
 ### Behavior notes
 
 - Processes whose `cwd` cannot be read (typically those owned by other users) are silently dropped.
+- Directories with no processes (`PIDS=0`) are hidden by default. Pass `--show-empty` to include them.
 - When two arguments are in a parent/child relationship, each process is counted toward the longest-prefix match only — no double counting.
 - CPU% is the gopsutil raw value, summed across cores (i.e. can exceed 100% on multi-core systems).
 
@@ -83,6 +84,7 @@ $ dirtop --json --top-procs 3 ~/src/foo | jq .
 | `--top-procs` | `0` | Show top N processes per directory (`0` = off) |
 | `--sort` | `input` | Sort rows by `input` / `cpu` / `mem` / `pids` |
 | `--full-cmd` | `false` | Show full command line in nested rows |
+| `--show-empty` | `false` | Include rows with `PIDS=0` |
 | `--json` | `false` | JSON output |
 | `--watch`, `-w` | `false` | Continuously refresh (TUI) |
 | `--interval` | `500ms` | CPU sampling interval |

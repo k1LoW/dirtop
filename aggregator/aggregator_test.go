@@ -160,6 +160,34 @@ func TestAggregate_SortKeys(t *testing.T) {
 	}
 }
 
+func TestAggregate_HideEmptyByDefault(t *testing.T) {
+	targets := []Target{
+		{Label: "a", AbsPath: "/a"},
+		{Label: "b", AbsPath: "/b"},
+		{Label: "c", AbsPath: "/c"},
+	}
+	samples := []collector.ProcSample{
+		{PID: 1, Cwd: "/a", CPU: 1, RSS: 1},
+		{PID: 2, Cwd: "/c", CPU: 1, RSS: 1},
+	}
+
+	got := Aggregate(samples, Options{Targets: targets, SortKey: SortInput})
+	if len(got) != 2 {
+		t.Fatalf("want 2 non-empty rows, got %d (%+v)", len(got), got)
+	}
+	if got[0].Dir != "a" || got[1].Dir != "c" {
+		t.Errorf("empty bucket 'b' not filtered: %v", []string{got[0].Dir, got[1].Dir})
+	}
+
+	got = Aggregate(samples, Options{Targets: targets, SortKey: SortInput, ShowEmpty: true})
+	if len(got) != 3 {
+		t.Fatalf("ShowEmpty: want 3 rows, got %d", len(got))
+	}
+	if got[1].Dir != "b" || got[1].PIDs != 0 {
+		t.Errorf("ShowEmpty: bucket 'b' should be present with PIDs=0, got %+v", got[1])
+	}
+}
+
 func TestAggregate_TopProcs(t *testing.T) {
 	targets := []Target{{Label: "a", AbsPath: "/a"}}
 	samples := []collector.ProcSample{
