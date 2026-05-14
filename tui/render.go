@@ -53,7 +53,7 @@ type TableOpts struct {
 func WriteTable(w io.Writer, stats []aggregator.DirStat, opts TableOpts) error {
 	pidWidth := maxPIDWidth(stats)
 	tw := tabwriter.NewWriter(w, 0, 0, 2, ' ', 0)
-	if _, err := fmt.Fprintln(tw, "DIR\tPID\tCOMMAND\tCPU%\tMEM(RSS)"); err != nil {
+	if _, err := fmt.Fprintln(tw, "DIR\tPID(S)\tCOMMAND\tCPU%\tMEM(RSS)"); err != nil {
 		return err
 	}
 	for _, s := range stats {

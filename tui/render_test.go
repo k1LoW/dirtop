@@ -41,7 +41,7 @@ func TestWriteTable_Basic(t *testing.T) {
 		t.Fatalf("WriteTable: %v", err)
 	}
 	got := buf.String()
-	for _, want := range []string{"DIR", "PID", "COMMAND", "CPU%", "MEM(RSS)", "~/src/foo", "(12)", "245.3", "1.2GiB"} {
+	for _, want := range []string{"DIR", "PID(S)", "COMMAND", "CPU%", "MEM(RSS)", "~/src/foo", "(12)", "245.3", "1.2GiB"} {
 		if !strings.Contains(got, want) {
 			t.Errorf("missing %q in:\n%s", want, got)
 		}

@@ -29,20 +29,20 @@ Download a binary from the [releases page](https://github.com/k1LoW/dirtop/relea
 
 ```console
 $ dirtop ~/src/github.com/k1LoW/dirtop ~/src/github.com/k1LoW/dirmap
-DIR                                       PID    COMMAND  CPU%  MEM(RSS)
-/Users/k1low/src/github.com/k1LoW/dirtop  (7)             18.9  163.2MiB
-/Users/k1low/src/github.com/k1LoW/dirmap  (0)             0.0   0B
+DIR                                       PID(S)  COMMAND  CPU%  MEM(RSS)
+/Users/k1low/src/github.com/k1LoW/dirtop  (7)              18.9  163.2MiB
+/Users/k1low/src/github.com/k1LoW/dirmap  (0)              0.0   0B
 ```
 
 Show the top processes inside each directory:
 
 ```console
 $ dirtop --top-procs 3 ~/src/github.com/k1LoW
-DIR                                PID    COMMAND          CPU%  MEM(RSS)
-/Users/k1low/src/github.com/k1LoW  (28)                    32.5  513.8MiB
-├─                                  3386  claude (dirtop/) 26.6  204.5MiB
-├─                                 55302  dirtop (dirtop/) 1.7   10.2MiB
-└─                                 88138  claude (animJ/)  1.7   33.9MiB
+DIR                                PID(S)  COMMAND           CPU%  MEM(RSS)
+/Users/k1low/src/github.com/k1LoW  (28)                      32.5  513.8MiB
+├─                                  3386   claude (dirtop/)  26.6  204.5MiB
+├─                                 55302   dirtop (dirtop/)  1.7   10.2MiB
+└─                                 88138   claude (animJ/)   1.7   33.9MiB
 ```
 
 Watch mode (Ctrl-C / `q` to quit):
