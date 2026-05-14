@@ -41,13 +41,14 @@ import (
 )
 
 var (
-	flagSort     string
-	flagTopProcs int
-	flagDepth    int
-	flagFullCmd  bool
-	flagJSON     bool
-	flagWatch    bool
-	flagInterval time.Duration
+	flagSort      string
+	flagTopProcs  int
+	flagDepth     int
+	flagFullCmd   bool
+	flagShowEmpty bool
+	flagJSON      bool
+	flagWatch     bool
+	flagInterval  time.Duration
 )
 
 var rootCmd = &cobra.Command{
@@ -86,6 +87,7 @@ func init() {
 	f.IntVar(&flagTopProcs, "top-procs", 0, "show top N processes per directory (0 = off)")
 	f.IntVar(&flagDepth, "depth", 0, "expand each DIR into subdirectories exactly N levels below (0 = off)")
 	f.BoolVar(&flagFullCmd, "full-cmd", false, "show full command line of nested top-procs rows")
+	f.BoolVar(&flagShowEmpty, "show-empty", false, "include rows with PIDS=0 (default: hidden)")
 	f.BoolVar(&flagJSON, "json", false, "output as JSON")
 	f.BoolVarP(&flagWatch, "watch", "w", false, "continuously refresh (TUI)")
 	f.DurationVar(&flagInterval, "interval", 500*time.Millisecond, "CPU sampling interval")
@@ -104,9 +106,10 @@ func runRoot(cmd *cobra.Command, args []string) error {
 	}
 
 	opts := aggregator.Options{
-		Targets:  targets,
-		SortKey:  flagSort,
-		TopProcs: flagTopProcs,
+		Targets:   targets,
+		SortKey:   flagSort,
+		TopProcs:  flagTopProcs,
+		ShowEmpty: flagShowEmpty,
 	}
 
 	ctx, stop := signal.NotifyContext(cmd.Context(), os.Interrupt, syscall.SIGTERM)
