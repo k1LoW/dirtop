@@ -4,7 +4,7 @@ go 1.26.1
 
 require (
 	github.com/charmbracelet/bubbletea v1.3.10
-	github.com/shirou/gopsutil/v4 v4.26.4
+	github.com/shirou/gopsutil/v4 v4.26.5
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/sync v0.20.0
 )
